@@ -177,6 +177,12 @@ class TestAccountService(TestCase):
         resp = self.client.delete(BASE_URL)
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
+    def test_update_non_existent_account(self):
+        """It should send 404 response if Account to be updated was not found"""
+        account = AccountFactory()
+        resp = self.client.put(f"{BASE_URL}/0", json=account.serialize()) # No account with ID 0
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
     ######################################################################
     #  S E C U R I T Y   T E S T   C A S E S
     ######################################################################
